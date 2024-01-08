@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	helpers "github.com/zercle/gofiber-helpers"
+	"github.com/thn-lee/01-task-management-api/pkg/models"
 )
 
 func Index() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		responseForm := helpers.ResponseForm{
+		responseForm := models.ResponseForm{
 			Success: true,
 			Result: fiber.Map{
 				"ip":            c.IP(),

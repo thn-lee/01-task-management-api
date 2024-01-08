@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/zercle/gofiber-skelton/pkg/logs"
+	"github.com/thn-lee/01-task-management-api/pkg/logs"
 )
 
 func TestWriteLog(t *testing.T) {

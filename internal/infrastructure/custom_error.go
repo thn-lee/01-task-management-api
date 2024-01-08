@@ -5,7 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
-	helpers "github.com/zercle/gofiber-helpers"
+	"github.com/thn-lee/01-task-management-api/pkg/models"
+	"github.com/thn-lee/01-task-management-api/pkg/utils"
 )
 
 var customErrorHandler = func(c *fiber.Ctx, err error) error {
@@ -13,15 +14,15 @@ var customErrorHandler = func(c *fiber.Ctx, err error) error {
 	code := http.StatusInternalServerError
 	var source string
 
-	if e, ok := err.(*helpers.Error); ok {
+	if e, ok := err.(*models.Error); ok {
 		// Override status code if helpers.Error type
 		code = e.Code
 		source, _ = e.Source.(string)
 	}
 
-	responseData := helpers.ResponseForm{
+	responseData := models.ResponseForm{
 		Success: false,
-		Errors:  []helpers.ResponseError{helpers.ResponseError(*helpers.NewError(code, source, err.Error()))},
+		Errors:  []models.ResponseError{models.ResponseError(*utils.NewError(code, source, err.Error()))},
 	}
 
 	// Return statuscode with error message

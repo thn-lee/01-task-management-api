@@ -15,10 +15,10 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/spf13/viper"
-	"github.com/zercle/gofiber-skelton/internal/datasources"
-	"github.com/zercle/gofiber-skelton/pkg/logs"
-	"github.com/zercle/gofiber-skelton/pkg/models"
-	"github.com/zercle/gofiber-skelton/pkg/utils"
+	"github.com/thn-lee/01-task-management-api/internal/datasources"
+	"github.com/thn-lee/01-task-management-api/pkg/logs"
+	"github.com/thn-lee/01-task-management-api/pkg/models"
+	"github.com/thn-lee/01-task-management-api/pkg/utils"
 )
 
 type Server struct {
@@ -38,14 +38,14 @@ func NewServer(version, buildTag, runEnv string) (server *Server, err error) {
 		RunEnv:  runEnv,
 	}
 
-	// connect to DB
-	mainDbConn, err := datasources.ConnectDb(datasources.DbConfig{
-		DbDriver: "sqlite",
-		DbName:   viper.GetString("db.sqlite.db_name"),
-	})
-	if err != nil {
-		return
-	}
+	// // connect to DB
+	// mainDbConn, err := datasources.ConnectDb(datasources.DbConfig{
+	// 	DbDriver: "sqlite",
+	// 	DbName:   viper.GetString("db.sqlite.db_name"),
+	// })
+	// if err != nil {
+	// 	return
+	// }
 
 	// server.RedisStorage, err = connectToRedis()
 	// if err != nil {
@@ -56,19 +56,18 @@ func NewServer(version, buildTag, runEnv string) (server *Server, err error) {
 
 	// utils.JsonParserPool = new(fastjson.ParserPool)
 
-	jwtResources, err := NewJwt(viper.GetString("jwt.private"))
-	if err != nil {
-		return
-	}
+	// jwtResources, err := NewJwt(viper.GetString("jwt.private"))
+	// if err != nil {
+	// 	return
+	// }
 
 	// init app resources
-	server.Resources = NewResources(fastHTTPClient, mainDbConn, nil, nil, jwtResources)
+	server.Resources = NewResources(fastHTTPClient, nil, nil, nil, nil)
 
 	// something that use resources place here
 
 	// pre config server
-	err = server.configApp()
-	if err != nil {
+	if err = server.configApp(); err != nil {
 		return
 	}
 
@@ -85,7 +84,7 @@ func (s *Server) Run() (err error) {
 		JSONEncoder: json.Marshal,
 		JSONDecoder: json.Unmarshal,
 		// behide reverse proxy
-		EnableTrustedProxyCheck: true,
+		// EnableTrustedProxyCheck: true,
 	})
 
 	// Logger middleware for Fiber that logs HTTP request/response details.
@@ -108,18 +107,18 @@ func (s *Server) Run() (err error) {
 	// Listen from a different goroutine
 
 	// Listen HTTP
-	// go func() {
-	// 	if err := app.Listen(":" + viper.GetString("app.port.http")); err != nil {
-	// 		log.Panic(err)
-	// 	}
-	// }()
-
-	// Listen HTTPS
 	go func() {
-		if err := app.ListenTLS(":"+viper.GetString("app.port.https"), viper.GetString("app.path.cert"), viper.GetString("app.path.priv")); err != nil {
+		if err := app.Listen(":" + viper.GetString("app.port.http")); err != nil {
 			log.Panic(err)
 		}
 	}()
+
+	// // Listen HTTPS
+	// go func() {
+	// 	if err := app.ListenTLS(":"+viper.GetString("app.port.https"), viper.GetString("app.path.cert"), viper.GetString("app.path.priv")); err != nil {
+	// 		log.Panic(err)
+	// 	}
+	// }()
 
 	// Create channel to signify a signal being sent
 	quit := make(chan os.Signal, 1)

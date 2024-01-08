@@ -1,12 +1,9 @@
 package infrastructure
 
 import (
-	"log"
-
 	"github.com/gofiber/fiber/v2"
-	"github.com/zercle/gofiber-skelton/internal/handlers"
-	"github.com/zercle/gofiber-skelton/pkg/books"
-	"github.com/zercle/gofiber-skelton/pkg/users"
+	"github.com/thn-lee/01-task-management-api/internal/handlers"
+	"github.com/thn-lee/01-task-management-api/pkg/tasks"
 )
 
 // SetupRoutes is the Router for GoFiber App
@@ -22,23 +19,17 @@ func (s *Server) SetupRoutes(app *fiber.App) {
 	}
 
 	// App Repository
-	bookRepository := books.NewBookRepository(s.MainDbConn)
-	userRepository := users.NewUserRepository(s.MainDbConn)
+	taskRepository := tasks.NewTaskRepository(s.MainDbConn)
 
-	// auto migrate DB only on main process
-	if !fiber.IsChild() {
-		if migrateErr := bookRepository.DbMigrator(); migrateErr != nil {
-			log.Panicf("error while migrate book DB:\n %+v", migrateErr)
-		}
-	}
+	// // auto migrate DB only on main process
+	// if !fiber.IsChild() {
+	// }
 
 	// App Services
-	bookUsecase := books.NewBookUsecase(bookRepository)
-	userUsecase := users.NewUserUsecase(userRepository)
+	taskUsecase := tasks.NewTaskUsecase(taskRepository)
 
 	// App Routes
-	books.NewBookHandler(app.Group("/api/v1/books"), bookUsecase)
-	users.NewUserHandler(app.Group("/api/v1/users"), userUsecase)
+	tasks.NewTaskHandler(groupApiV1.Group("/tasks"), taskUsecase)
 
 	// Prepare a fallback route to always serve the 'index.html', had there not be any matching routes.
 	app.Static("*", "./web/build/index.html")

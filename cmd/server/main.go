@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	server "github.com/zercle/gofiber-skelton/internal/infrastructure"
-	"github.com/zercle/gofiber-skelton/pkg/config"
+	server "github.com/thn-lee/01-task-management-api/internal/infrastructure"
+	"github.com/thn-lee/01-task-management-api/pkg/config"
 )
 
 var (
@@ -20,7 +20,7 @@ func init() {
 	if len(os.Getenv("ENV")) != 0 {
 		runEnv = os.Getenv("ENV")
 	} else {
-		flagEnv := flag.String("env", "dev", "A config file name without .env")
+		flagEnv := flag.String("env", "local", "A config file name without .env")
 		flag.Parse()
 		runEnv = *flagEnv
 	}

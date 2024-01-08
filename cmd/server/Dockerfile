@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get -y clean
 
 # for CI/CD with private repo
-# RUN go env -w GOPRIVATE=github.com/zercle
+# RUN go env -w GOPRIVATE=github.com/thn-lee
 
 # use ssh instead of https
 # RUN git config --global url."git@github.com:".insteadOf "https://github.com"
@@ -36,7 +36,7 @@ RUN CGO_ENABLED=0 go build -v \
 
 # pack PRD image
 FROM gcr.io/distroless/base:nonroot
-LABEL maintainer="Kawin Viriyaprasopsook <kawin.vir@zercle.tech>"
+LABEL maintainer="Thanawat Leelawatcharamas <thanawat.lee@kkumail.com>"
 
 ARG timezone=Asia/Bangkok
 

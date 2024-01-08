@@ -1,13 +1,10 @@
 app:
-  name: "gofiber-skeleton"
-  env: "production"
+  name: "01-task-management-api"
+  env: "local"
   port:
     http: 8080
     https: 8443
   path:
-    cert: "./internal/assets/prd/tls/zercle-prd.crt"
-    priv: "./internal/assets/prd/tls/zercle-prd.key"
-    ca: "./internal/assets/prd/tls/rootCA.crt"
     log: "./log"
 
 db:
@@ -42,6 +39,6 @@ db:
 
 jwt:
   # openssl ecparam -name prime256v1 -genkey -noout -out privkey.pem
-  private: "./internal/assets/prd/jwt/privkey.pem"
+  private: "./internal/assets/dev/jwt/privkey.pem"
   # openssl ec -in privkey.pem -pubout -out pubkey.pem
-  public: "./internal/assets/prd/jwt/pubkey.pem"
+  public: "./internal/assets/dev/jwt/pubkey.pem"

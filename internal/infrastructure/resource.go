@@ -6,8 +6,8 @@ import (
 	"github.com/gofiber/storage/redis"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/valyala/fasthttp"
-	"github.com/zercle/gofiber-skelton/internal/datasources"
-	"github.com/zercle/gofiber-skelton/pkg/models"
+	"github.com/thn-lee/01-task-management-api/internal/datasources"
+	"github.com/thn-lee/01-task-management-api/pkg/models"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )

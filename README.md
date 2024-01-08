@@ -1,9 +1,19 @@
-# gofiber-skeleton
-Skeleton for GO Fiber
+# 01-Task-Management-API
 
+I'll be back soon.
 ## quick start
-```shell
-git clone git@github.com:zercle/gofiber-skelton.git {{your_project_folder}}
-git remote set-url origin {{your_git_project_repo}}
-git push -u origin main
+if you already installed Makefile, try this
 ```
+make tidy
+make run
+```
+
+for those who didn't, don't worry i got your back
+```
+go mod tidy
+go run ./cmd/server/
+```
+
+## requirement
+- this repository required Go version atleast 1.18 >> Go(https://go.dev/doc/install)
+

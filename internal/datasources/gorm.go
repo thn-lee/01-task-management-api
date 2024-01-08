@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	helpers "github.com/zercle/gofiber-helpers"
+	"github.com/thn-lee/01-task-management-api/pkg/utils"
 	"gorm.io/driver/clickhouse"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
@@ -86,9 +86,9 @@ func ConnectDb(config DbConfig, opts ...gorm.Option) (dbConn *gorm.DB, err error
 		return
 	}
 	if err != nil {
-		log.Printf("%+v \nErr: %+v", helpers.WhereAmI(), err)
-		log.Printf("%+v \nDSN: %+v", helpers.WhereAmI(), dsn)
-		log.Printf("%+v \nopts: %+v", helpers.WhereAmI(), opts)
+		log.Printf("%+v \nErr: %+v", utils.WhereAmI(), err)
+		log.Printf("%+v \nDSN: %+v", utils.WhereAmI(), dsn)
+		log.Printf("%+v \nopts: %+v", utils.WhereAmI(), opts)
 		return
 	}
 	err = applyDbPoolConfig(dbConn, config)

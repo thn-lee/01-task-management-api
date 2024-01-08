@@ -5,9 +5,9 @@ app:
     http: 8080
     https: 8443
   path:
-    cert: "./internal/assets/dev/tls/zercle-dev.crt"
-    priv: "./internal/assets/dev/tls/zercle-dev.key"
-    ca: "./internal/assets/dev/tls/rootCA.crt"
+    # cert: "./internal/assets/dev/tls/zercle-dev.crt"
+    # priv: "./internal/assets/dev/tls/zercle-dev.key"
+    # ca: "./internal/assets/dev/tls/rootCA.crt"
     log: "./log"
 
 db:
