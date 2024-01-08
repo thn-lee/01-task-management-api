@@ -1,12 +1,12 @@
 package models
 
 type ResponseForm struct {
-	Success    bool            `json:"success"`
 	Result     interface{}     `json:"result,omitempty"`
 	Data       interface{}     `json:"data,omitempty"`
+	ResultInfo *ResultInfo     `json:"result_info,omitempty"`
 	Messages   []string        `json:"messages,omitempty"`
 	Errors     []ResponseError `json:"errors,omitempty"`
-	ResultInfo *ResultInfo     `json:"result_info,omitempty"`
+	Success    bool            `json:"success"`
 }
 
 // ResponseError

@@ -6,10 +6,10 @@ import (
 
 // Error represents an error that occurred while handling a request.
 type Error struct {
-	Code    int         `json:"code"`
 	Source  interface{} `json:"source,omitempty"`
 	Title   string      `json:"title,omitempty"`
 	Message string      `json:"message,omitempty"`
+	Code    int         `json:"code"`
 }
 
 func (e *Error) Error() (errStr string) {

@@ -1,9 +1,9 @@
 package tasks
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,12 +11,11 @@ import (
 	models "github.com/thn-lee/01-task-management-api/pkg/models/api"
 	"github.com/thn-lee/01-task-management-api/pkg/utils"
 
-	// utils "github.com/zercle/gofiber-utils"
-
 	"gorm.io/gorm"
 )
 
 type taskRepository struct {
+	mu       sync.Mutex
 	taskList []models.Task
 }
 
@@ -34,6 +33,9 @@ func NewTaskRepository(mainDbConn *gorm.DB) domain.TaskRepository {
 }
 
 func (r *taskRepository) GetTask(taskID uint) (task models.Task, err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	for _, task := range r.taskList {
 		if task.ID == taskID {
 			return task, nil
@@ -46,26 +48,28 @@ func (r *taskRepository) GetTask(taskID uint) (task models.Task, err error) {
 }
 
 func (r *taskRepository) GetTasks(criteria models.Task) (tasks []models.Task, err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	tasks = r.taskList
 	return
 }
 
 func (r *taskRepository) CreateTask(task *models.Task) (result models.Task, err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
 	task.ID = uint(len(r.taskList) + 1)
-	fmt.Println(">>>> passed 1")
 	task.CreatedAt = time.Now()
-	fmt.Println(">>>> passed 2")
 	task.UpdatedAt = time.Now()
-	fmt.Println(">>>> passed 3")
 	r.taskList = append(r.taskList, *task)
-	fmt.Println(">>>> passed 4")
 
 	result = *task
-	fmt.Println(">>>> passed 5")
 	return
 }
 
 func (r *taskRepository) EditTask(taskID uint, incomingTask models.Task) (result models.Task, err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	for taskIndex, task := range r.taskList {
 		if task.ID == taskID {
 			// update title
@@ -77,7 +81,6 @@ func (r *taskRepository) EditTask(taskID uint, incomingTask models.Task) (result
 				r.taskList[taskIndex].Description = incomingTask.Description
 			}
 			r.taskList[taskIndex].UpdatedAt = time.Now()
-			fmt.Println(">>>>>>> updated task")
 			return r.taskList[taskIndex], nil
 		}
 	}
@@ -89,6 +92,9 @@ func (r *taskRepository) EditTask(taskID uint, incomingTask models.Task) (result
 }
 
 func (r *taskRepository) EditTaskStatus(taskID uint, status string) (result models.Task, err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	for taskIndex, task := range r.taskList {
 		if task.ID == taskID {
 			// update title
@@ -96,7 +102,6 @@ func (r *taskRepository) EditTaskStatus(taskID uint, status string) (result mode
 				r.taskList[taskIndex].Status = status
 			}
 			r.taskList[taskIndex].UpdatedAt = time.Now()
-			fmt.Println(">>>>>>> updated task")
 			return r.taskList[taskIndex], nil
 		}
 	}
@@ -108,6 +113,9 @@ func (r *taskRepository) EditTaskStatus(taskID uint, status string) (result mode
 }
 
 func (r *taskRepository) DeleteTask(taskID uint) (err error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
 	for taskIndex, task := range r.taskList {
 		if task.ID == taskID {
 			r.taskList = append(r.taskList[:taskIndex], r.taskList[taskIndex+1:]...)

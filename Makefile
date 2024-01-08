@@ -3,6 +3,15 @@
 # 	docker-save \
 # 	docker-clean
 
+install:
+	brew install go
+
+go-install:
+	go install golang.org/x/tools/go/analysis/passes/fieldalignment/cmd/fieldalignment@latest
+
+field-align f-al:
+	fieldalignment -fix ./...
+
 go-build:
 	CGO_ENABLED=0 go build -v \
 	-buildvcs=false \
@@ -20,14 +29,13 @@ go-build:
 # docker-save:
 # 	docker save thn-lee/01-task-management-api | gzip > dist/01-task-management-api.tar.gz
 
-docker-clean:
-	docker image prune -f
+# docker-clean:
+# 	docker image prune -f
 
-go-mod tidy:
+go-mod tidy m: 
 	go mod tidy
-#  go get -v -u && go mod tidy
 
-go-test:
+go-test test t:
 	go test -v ./... -v -cover
 
 go-run run r:
