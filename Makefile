@@ -33,7 +33,7 @@ go-build:
 # 	docker image prune -f
 
 go-mod tidy m: 
-	go mod tidy
+	go mod tidy --compat=1.18
 
 go-test test t:
 	go test -v ./... -v -cover
