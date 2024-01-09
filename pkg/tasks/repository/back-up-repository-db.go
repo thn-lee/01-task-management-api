@@ -33,7 +33,7 @@ package tasks
 // 	return
 // }
 
-// func (r *taskRepository) GetTasks(criteria models.Task) (tasks []models.Task, err error) {
+// func (r *taskRepository) ListTasks(criteria models.Task) (tasks []models.Task, err error) {
 // 	if r.MainDbConn == nil {
 // 		err = fmt.Errorf("%s \nErr: %+v", helpers.WhereAmI(), "database has gone away.")
 // 		return
@@ -54,7 +54,7 @@ package tasks
 // 	return
 // }
 
-// func (r *taskRepository) CreateTask(task *models.TaskBody) (result models.Task, err error) {
+// func (r *taskRepository) CreateTask(task models.TaskBody) (result models.Task, err error) {
 // 	if r.MainDbConn == nil {
 // 		err = fmt.Errorf("%s \nErr: %+v", helpers.WhereAmI(), "database has gone away.")
 // 		return

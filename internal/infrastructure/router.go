@@ -3,7 +3,10 @@ package infrastructure
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/thn-lee/01-task-management-api/internal/handlers"
-	"github.com/thn-lee/01-task-management-api/pkg/tasks"
+	tasksHandler "github.com/thn-lee/01-task-management-api/pkg/tasks/handler"
+	tasksRepo "github.com/thn-lee/01-task-management-api/pkg/tasks/repository"
+	tasksUsecase "github.com/thn-lee/01-task-management-api/pkg/tasks/usecase"
+	// "github.com/thn-lee/01-task-management-api/pkg/tasks"
 )
 
 // SetupRoutes is the Router for GoFiber App
@@ -19,17 +22,17 @@ func (s *Server) SetupRoutes(app *fiber.App) {
 	}
 
 	// App Repository
-	taskRepository := tasks.NewTaskRepository(s.MainDbConn)
+	taskRepository := tasksRepo.NewTaskRepository(s.MainDbConn)
 
 	// // auto migrate DB only on main process
 	// if !fiber.IsChild() {
 	// }
 
 	// App Services
-	taskUsecase := tasks.NewTaskUsecase(taskRepository)
+	taskUsecase := tasksUsecase.NewTaskUsecase(taskRepository)
 
 	// App Routes
-	tasks.NewTaskHandler(groupApiV1.Group("/tasks"), taskUsecase)
+	tasksHandler.NewTaskHandler(groupApiV1.Group("/tasks"), taskUsecase)
 
 	// Prepare a fallback route to always serve the 'index.html', had there not be any matching routes.
 	app.Static("*", "./web/build/index.html")
