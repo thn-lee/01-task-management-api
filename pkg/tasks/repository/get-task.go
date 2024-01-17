@@ -10,10 +10,12 @@ import (
 )
 
 func (r *taskRepository) GetTask(taskID uint) (task models.Task, err error) {
-	for _, task := range r.taskList {
-		if task.ID == taskID {
-			return task, nil
-		}
+	r.tasksMapListCounter.RLock()
+	defer r.tasksMapListCounter.RUnlock()
+
+	if r.tasksMapListCounter.tasksMapList[int(taskID)] != (models.Task{}) {
+		task = r.tasksMapListCounter.tasksMapList[int(taskID)]
+		return task, nil
 	}
 
 	log.Printf("source: %+v\nerr: %+v", utils.WhereAmI(), err)

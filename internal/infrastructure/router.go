@@ -28,7 +28,7 @@ func (s *Server) SetupRoutes(app *fiber.App) {
 	// if !fiber.IsChild() {
 	// }
 
-	// App Services
+	// App Usecases
 	taskUsecase := tasksUsecase.NewTaskUsecase(taskRepository)
 
 	// App Routes

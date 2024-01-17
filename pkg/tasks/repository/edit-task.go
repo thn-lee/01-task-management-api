@@ -11,20 +11,27 @@ import (
 )
 
 func (r *taskRepository) EditTask(taskID uint, incomingTask models.Task) (result models.Task, err error) {
-	for taskIndex, task := range r.taskList {
-		if task.ID == taskID {
-			// update title
-			if incomingTask.Title != "" {
-				r.taskList[taskIndex].Title = incomingTask.Title
-			}
-			// update title description
-			if incomingTask.Description != "" {
-				r.taskList[taskIndex].Description = incomingTask.Description
-			}
-			r.taskList[taskIndex].UpdatedAt = time.Now()
-			return r.taskList[taskIndex], nil
+	// for taskIndex, task := range r.tasksMapList {
+	r.tasksMapListCounter.Lock()
+	defer r.tasksMapListCounter.Unlock()
+	if r.tasksMapListCounter.tasksMapList[int(taskID)] != (models.Task{}) {
+		// update title
+		if incomingTask.Title != "" {
+			updatedTask := r.tasksMapListCounter.tasksMapList[int(taskID)]
+			updatedTask.Title = incomingTask.Title
+			updatedTask.UpdatedAt = time.Now()
+			r.tasksMapListCounter.tasksMapList[int(taskID)] = updatedTask
 		}
+		// update title description
+		if incomingTask.Description != "" {
+			updatedTask := r.tasksMapListCounter.tasksMapList[int(taskID)]
+			updatedTask.Description = incomingTask.Description
+			updatedTask.UpdatedAt = time.Now()
+			r.tasksMapListCounter.tasksMapList[int(taskID)] = updatedTask
+		}
+		return r.tasksMapListCounter.tasksMapList[int(taskID)], nil
 	}
+	// }
 
 	// task not found
 	log.Printf("source: %+v\nerr: %+v", utils.WhereAmI(), err)

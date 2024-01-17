@@ -11,15 +11,17 @@ import (
 )
 
 func (r *taskRepository) EditTaskStatus(taskID uint, status string) (result models.Task, err error) {
-	for taskIndex, task := range r.taskList {
-		if task.ID == taskID {
-			// update status
-			if status != "" {
-				r.taskList[taskIndex].Status = status
-			}
-			r.taskList[taskIndex].UpdatedAt = time.Now()
-			return r.taskList[taskIndex], nil
+	r.tasksMapListCounter.Lock()
+	defer r.tasksMapListCounter.Unlock()
+	if r.tasksMapListCounter.tasksMapList[int(taskID)] != (models.Task{}) {
+		// update status
+		if status != "" {
+			updatedTask := r.tasksMapListCounter.tasksMapList[int(taskID)]
+			updatedTask.Status = status
+			updatedTask.UpdatedAt = time.Now()
+			r.tasksMapListCounter.tasksMapList[int(taskID)] = updatedTask
 		}
+		return r.tasksMapListCounter.tasksMapList[int(taskID)], nil
 	}
 
 	// task not found

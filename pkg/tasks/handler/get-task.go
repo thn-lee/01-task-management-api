@@ -30,8 +30,9 @@ func (h *TaskHandler) GetTask() fiber.Handler {
 				"task": task,
 			}
 		} else {
+			// {{base_urk}}/api/v1/tasks/1?criteria="some_text", order="", page limit ...
 			// TODO: for future improvement to make this api searchable or filterable
-			var criteria models.Task
+			var criteria models.TaskBody
 			if err := c.QueryParser(&criteria); err != nil {
 				responseForm.Success = false
 				responseForm.Errors = append(responseForm.Errors, respModels.ResponseError{

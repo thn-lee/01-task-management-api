@@ -143,27 +143,27 @@ func (_m *TaskUsecase) GetTask(taskID uint) (models.Task, error) {
 }
 
 // ListTasks provides a mock function with given fields: criteria
-func (_m *TaskUsecase) ListTasks(criteria models.Task) ([]models.Task, error) {
+func (_m *TaskUsecase) ListTasks(criteria models.TaskBody) (map[int]models.Task, error) {
 	ret := _m.Called(criteria)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ListTasks")
 	}
 
-	var r0 []models.Task
+	var r0 map[int]models.Task
 	var r1 error
-	if rf, ok := ret.Get(0).(func(models.Task) ([]models.Task, error)); ok {
+	if rf, ok := ret.Get(0).(func(models.TaskBody) (map[int]models.Task, error)); ok {
 		return rf(criteria)
 	}
-	if rf, ok := ret.Get(0).(func(models.Task) []models.Task); ok {
+	if rf, ok := ret.Get(0).(func(models.TaskBody) map[int]models.Task); ok {
 		r0 = rf(criteria)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Task)
+			r0 = ret.Get(0).(map[int]models.Task)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func(models.Task) error); ok {
+	if rf, ok := ret.Get(1).(func(models.TaskBody) error); ok {
 		r1 = rf(criteria)
 	} else {
 		r1 = ret.Error(1)

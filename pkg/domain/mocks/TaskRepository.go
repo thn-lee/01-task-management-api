@@ -143,23 +143,23 @@ func (_m *TaskRepository) GetTask(taskID uint) (models.Task, error) {
 }
 
 // ListTasks provides a mock function with given fields: criteria
-func (_m *TaskRepository) ListTasks(criteria models.Task) ([]models.Task, error) {
+func (_m *TaskRepository) ListTasks(criteria models.Task) (map[int]models.Task, error) {
 	ret := _m.Called(criteria)
 
 	if len(ret) == 0 {
 		panic("no return value specified for ListTasks")
 	}
 
-	var r0 []models.Task
+	var r0 map[int]models.Task
 	var r1 error
-	if rf, ok := ret.Get(0).(func(models.Task) ([]models.Task, error)); ok {
+	if rf, ok := ret.Get(0).(func(models.Task) (map[int]models.Task, error)); ok {
 		return rf(criteria)
 	}
-	if rf, ok := ret.Get(0).(func(models.Task) []models.Task); ok {
+	if rf, ok := ret.Get(0).(func(models.Task) map[int]models.Task); ok {
 		r0 = rf(criteria)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.Task)
+			r0 = ret.Get(0).(map[int]models.Task)
 		}
 	}
 

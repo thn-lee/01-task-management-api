@@ -7,11 +7,18 @@ import (
 )
 
 func (r *taskRepository) CreateTask(task models.Task) (result models.Task, err error) {
-	task.ID = uint(len(r.taskList) + 1)
-	task.CreatedAt = time.Now()
-	task.UpdatedAt = time.Now()
-	r.taskList = append(r.taskList, task)
+	r.tasksMapListCounter.Lock()
+	defer r.tasksMapListCounter.Unlock()
+	latestID := len(r.tasksMapListCounter.tasksMapList)
+	r.tasksMapListCounter.tasksMapList[latestID+1] = models.Task{
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
+		Title:       task.Title,
+		Description: task.Description,
+		Status:      task.Status,
+		ID:          uint(latestID + 1),
+	}
 
-	result = task
+	result = r.tasksMapListCounter.tasksMapList[latestID+1]
 	return
 }
